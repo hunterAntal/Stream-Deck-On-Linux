@@ -7,6 +7,7 @@ A Python application that allows you to control the volume of a specified applic
 - **Volume Up**: Increase the volume of the target application by a fixed percentage.
 - **Volume Down**: Decrease the volume of the target application by a fixed percentage.
 - **Mute/Unmute**: Toggle mute status for the target application.
+- **Play/Pause**
 - **Dynamic Button Icons**: Updates the Stream Deck button icons to reflect the current volume state.
 
 ## Requirements
@@ -28,6 +29,7 @@ A Python application that allows you to control the volume of a specified applic
 - `pactl` (PulseAudio control utility)
 - `libhidapi-hidraw0` and `libhidapi-libusb0` (for HID API)
 - `libusb-1.0-0-dev`
+- 'playerctl' (for controlling media playback)
 
 ### Running
 Running the lsusb | grep Elgato command will list any connected Elgato devices recognized by the system. If your Stream Deck is plugged in and properly detected
