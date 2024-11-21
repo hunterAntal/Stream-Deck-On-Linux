@@ -14,6 +14,7 @@ logging.basicConfig(level=logging.INFO)
 VOLUME_DOWN_BUTTON = 0
 VOLUME_UP_BUTTON = 1
 MUTE_TOGGLE_BUTTON = 2
+PLAY_PAUSE_BUTTON = 3  # New button for play/pause
 TARGET_APP = "spotify"
 
 # Function to get the sink input ID of the target application
@@ -60,6 +61,16 @@ def get_current_volume():
             return volume_percent
     return None
 
+def toggle_play_pause():
+    subprocess.run(['playerctl', '-p', 'spotify', 'play-pause'])
+
+def get_playback_status():
+    result = subprocess.run(['playerctl', '-p', 'spotify', 'status'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    status = result.stdout.decode().strip()
+    if status == '':
+        return 'Stopped'  # If Spotify is not running
+    return status  # 'Playing' or 'Paused'
+
 def is_muted():
     sink_id = get_sink_input_id()
     if sink_id:
@@ -103,9 +114,21 @@ def update_key_images(deck):
 
     # Mute/Unmute Button
     mute_status = "Muted" if is_muted() else "Unmuted"
-    mute_icon = "icons/muted.png" if is_muted() else "icons/unmuted.png"
+    mute_icon = "icons/unmuted.png" if is_muted() else "icons/muted.png"
     mute_image = render_key_image(deck, mute_icon, mute_status)
     deck.set_key_image(MUTE_TOGGLE_BUTTON, mute_image)
+
+    # Play/Pause Button
+    playback_status = get_playback_status()
+    if playback_status == 'Playing':
+        play_pause_icon = "icons/pause.png"
+        play_pause_label = "Pause"
+    else:
+        play_pause_icon = "icons/play.png"
+        play_pause_label = "Play"
+
+    play_pause_image = render_key_image(deck, play_pause_icon, play_pause_label)
+    deck.set_key_image(PLAY_PAUSE_BUTTON, play_pause_image)
 
 # Key press event handler
 def key_change_callback(deck, key, state):
@@ -119,6 +142,11 @@ def key_change_callback(deck, key, state):
         elif key == MUTE_TOGGLE_BUTTON:
             logging.info("Mute/Unmute button pressed.")
             toggle_mute()
+
+        elif key == PLAY_PAUSE_BUTTON:
+            logging.info("Play/Pause button pressed.")
+            toggle_play_pause()
+
         update_key_images(deck)
 
 # Main function
