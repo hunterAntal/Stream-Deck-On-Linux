@@ -28,3 +28,16 @@ A Python application that allows you to control the volume of a specified applic
 - `pactl` (PulseAudio control utility)
 - `libhidapi-hidraw0` and `libhidapi-libusb0` (for HID API)
 - `libusb-1.0-0-dev`
+
+### Running
+Running the lsusb | grep Elgato command will list any connected Elgato devices recognized by the system. If your Stream Deck is plugged in and properly detected
+
+
+Activate the Virtual Environment:
+    source env/bin/activate
+deactivate:
+    deactivate
+
+Run StreamDeck:
+    python3 streamdeckVolumeControl.py
+
