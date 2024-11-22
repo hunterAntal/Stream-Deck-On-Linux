@@ -45,16 +45,16 @@ Running the lsusb | grep Elgato command will list any connected Elgato devices r
 - sudo apt-get install pulseaudio-utils libhidapi-hidraw0 libhidapi-libusb0 libusb-1.0-0-dev
 5. Set Up udev Rules for Stream Deck Access
 - Create a udev rules file to allow non-root access to the Stream Deck:
-- sudo nano /etc/udev/rules.d/99-streamdeck.rules
+    - sudo nano /etc/udev/rules.d/99-streamdeck.rules
 - Add the following content (replace YOUR_PRODUCT_ID with your Stream Deck's product ID):
-- SUBSYSTEM=="input", GROUP="input", MODE="0666"
-- KERNEL=="hidraw*", ATTRS{idVendor}=="0fd9", MODE="0666", GROUP="plugdev"
+    - SUBSYSTEM=="input", GROUP="input", MODE="0666"
+    - KERNEL=="hidraw*", ATTRS{idVendor}=="0fd9", MODE="0666", GROUP="plugdev"
 -KERNEL=="hidraw*", ATTRS{idVendor}=="0fd9", ATTRS{idProduct}=="YOUR_PRODUCT_ID", MODE="0666", GROUP="plugdev"
 
 Note: You can find your Stream Deck's product ID by running lsusb and looking for the Elgato device.
 - Reload udev rules and replug the device:
-- sudo udevadm control --reload-rules
-- sudo udevadm trigger
+    - sudo udevadm control --reload-rules
+    - sudo udevadm trigger
 6. Add User to plugdev Group
 - sudo usermod -aG plugdev $USER
 - Log out and log back in to apply group changes.
